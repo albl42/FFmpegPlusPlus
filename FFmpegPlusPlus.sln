@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FFmpegPlusPlusApp", "src\ap
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FFmpegPlusPlusLib", "src\lib\FFmpegPlusPlusLib.vcxproj", "{76389FFA-5D7F-44FF-AC08-FF0050290646}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utilix", "src\utils\Utilix.vcxproj", "{F2967C2E-207C-43CC-9F76-41A12455E3D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -25,12 +27,20 @@ Global
 		{1E1BBE3E-93B0-4B18-A0D7-DB2FD3F75425}.Release|x86.Build.0 = Release|x64
 		{76389FFA-5D7F-44FF-AC08-FF0050290646}.Debug|x64.ActiveCfg = Debug|x64
 		{76389FFA-5D7F-44FF-AC08-FF0050290646}.Debug|x64.Build.0 = Debug|x64
-		{76389FFA-5D7F-44FF-AC08-FF0050290646}.Debug|x86.ActiveCfg = Debug|Win32
-		{76389FFA-5D7F-44FF-AC08-FF0050290646}.Debug|x86.Build.0 = Debug|Win32
+		{76389FFA-5D7F-44FF-AC08-FF0050290646}.Debug|x86.ActiveCfg = Debug|x64
+		{76389FFA-5D7F-44FF-AC08-FF0050290646}.Debug|x86.Build.0 = Debug|x64
 		{76389FFA-5D7F-44FF-AC08-FF0050290646}.Release|x64.ActiveCfg = Release|x64
 		{76389FFA-5D7F-44FF-AC08-FF0050290646}.Release|x64.Build.0 = Release|x64
-		{76389FFA-5D7F-44FF-AC08-FF0050290646}.Release|x86.ActiveCfg = Release|Win32
-		{76389FFA-5D7F-44FF-AC08-FF0050290646}.Release|x86.Build.0 = Release|Win32
+		{76389FFA-5D7F-44FF-AC08-FF0050290646}.Release|x86.ActiveCfg = Release|x64
+		{76389FFA-5D7F-44FF-AC08-FF0050290646}.Release|x86.Build.0 = Release|x64
+		{F2967C2E-207C-43CC-9F76-41A12455E3D4}.Debug|x64.ActiveCfg = Debug|x64
+		{F2967C2E-207C-43CC-9F76-41A12455E3D4}.Debug|x64.Build.0 = Debug|x64
+		{F2967C2E-207C-43CC-9F76-41A12455E3D4}.Debug|x86.ActiveCfg = Debug|x64
+		{F2967C2E-207C-43CC-9F76-41A12455E3D4}.Debug|x86.Build.0 = Debug|x64
+		{F2967C2E-207C-43CC-9F76-41A12455E3D4}.Release|x64.ActiveCfg = Release|x64
+		{F2967C2E-207C-43CC-9F76-41A12455E3D4}.Release|x64.Build.0 = Release|x64
+		{F2967C2E-207C-43CC-9F76-41A12455E3D4}.Release|x86.ActiveCfg = Release|x64
+		{F2967C2E-207C-43CC-9F76-41A12455E3D4}.Release|x86.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
