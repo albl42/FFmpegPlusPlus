@@ -1,3 +1,6 @@
+# Logging Directory
+logs/*.log
+
 # Prerequisites
 *.d
 
@@ -58,7 +61,7 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
-[Ll]ogs/
+#[Ll]ogs/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
