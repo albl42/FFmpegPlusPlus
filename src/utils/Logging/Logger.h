@@ -84,12 +84,17 @@ namespace Utilix {
 	*/
 	class LogFormatter {
 	public:
-		static std::string format(
+		static std::string Format(
 			const std::string_view& current_time,
 			const std::string_view& log_type,
 			const std::string_view& msg,
-			const std::string_view& file,
+			const std::string_view& src,
 			int line);
+		static std::string Format(
+			const std::string_view& current_time,
+			const std::string_view& log_type,
+			const std::string_view& msg,
+			const std::string_view& src);
 	};
 
 	/**
@@ -108,6 +113,10 @@ namespace Utilix {
 			const std::string& msg,
 			const std::string& src_file,
 			int line) const;
+		void log(
+			LogType type,
+			const std::string& msg,
+			const std::string& src_file) const;
 
 	private:
 		LoggerPool() = default; // Singleton
@@ -132,20 +141,22 @@ namespace Utilix {
 #define LOG_TYPE_ERROR Utilix::LogType::ERROR
 #define LOG_TYPE_PANIC Utilix::LogType::PANIC
 
-#define ACTIVATE_TERMINAL_LOGGER() Utilix::LoggerPool::get_instance().add_terminal_logger();
+#define ACTIVATE_TERMINAL_LOGGER()     Utilix::LoggerPool::get_instance().add_terminal_logger();
 #define ACTIVATE_FILE_LOGGER(filepath) Utilix::LoggerPool::get_instance().add_file_logger((filepath));
 #define ACTIVATE_DEFAULT_FILE_LOGGER() Utilix::LoggerPool::get_instance().add_file_logger();
 
-#define ACTIVATE_TERMINAL_LOGGER_MASK(typemask) Utilix::LoggerPool::get_instance().add_terminal_logger((typemask));
+#define ACTIVATE_TERMINAL_LOGGER_MASK(typemask)       Utilix::LoggerPool::get_instance().add_terminal_logger((typemask));
 #define ACTIVATE_FILE_LOGGER_MASK(filepath, typemask) Utilix::LoggerPool::get_instance().add_file_logger((filepath), (typemask));
-#define ACTIVATE_DEFAULT_FILE_LOGGER_MASK(typemask) Utilix::LoggerPool::get_instance().add_file_logger((typemask));
+#define ACTIVATE_DEFAULT_FILE_LOGGER_MASK(typemask)   Utilix::LoggerPool::get_instance().add_file_logger((typemask));
 
-#define LOG_TRACE(msg) Utilix::LoggerPool::get_instance().log(LOG_TYPE_TRACE, msg, __FILE__, __LINE__);
-#define LOG_TIME(msg)  Utilix::LoggerPool::get_instance().log(LOG_TYPE_TIME , msg, __FILE__, __LINE__);
-#define LOG_DEBUG(msg) Utilix::LoggerPool::get_instance().log(LOG_TYPE_DEBUG, msg, __FILE__, __LINE__);
-#define LOG_INFO(msg)  Utilix::LoggerPool::get_instance().log(LOG_TYPE_INFO , msg, __FILE__, __LINE__);
-#define LOG_WARN(msg)  Utilix::LoggerPool::get_instance().log(LOG_TYPE_WARN , msg, __FILE__, __LINE__);
-#define LOG_ERROR(msg) Utilix::LoggerPool::get_instance().log(LOG_TYPE_ERROR, msg, __FILE__, __LINE__);
-#define LOG_PANIC(msg) Utilix::LoggerPool::get_instance().log(LOG_TYPE_PANIC, msg, __FILE__, __LINE__);
+#define LOG_TRACE(msg) Utilix::LoggerPool::get_instance().log(LOG_TYPE_TRACE, (msg), __FILE__, __LINE__);
+#define LOG_TIME(msg)  Utilix::LoggerPool::get_instance().log(LOG_TYPE_TIME , (msg), __FILE__, __LINE__);
+#define LOG_DEBUG(msg) Utilix::LoggerPool::get_instance().log(LOG_TYPE_DEBUG, (msg), __FILE__, __LINE__);
+#define LOG_INFO(msg)  Utilix::LoggerPool::get_instance().log(LOG_TYPE_INFO , (msg), __FILE__, __LINE__);
+#define LOG_WARN(msg)  Utilix::LoggerPool::get_instance().log(LOG_TYPE_WARN , (msg), __FILE__, __LINE__);
+#define LOG_ERROR(msg) Utilix::LoggerPool::get_instance().log(LOG_TYPE_ERROR, (msg), __FILE__, __LINE__);
+#define LOG_PANIC(msg) Utilix::LoggerPool::get_instance().log(LOG_TYPE_PANIC, (msg), __FILE__, __LINE__);
+
+#define LOG_FFMPEG(type, msg, src) Utilix::LoggerPool::get_instance().log((type), (msg), (src));
 
 #endif

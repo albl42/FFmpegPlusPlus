@@ -2,5 +2,18 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="util\FFmpegLogging.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="util">
+      <UniqueIdentifier>{5864ca79-f313-40ba-8328-96b1462a68b5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="util\FFmpegLogging.h">
+      <Filter>util</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

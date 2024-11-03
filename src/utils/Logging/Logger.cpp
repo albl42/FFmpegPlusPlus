@@ -1,5 +1,5 @@
 /*
- * Logger implmentation
+ * Logger.cpp
  *
  * Provides logging functionality.
  */
@@ -126,14 +126,24 @@ Utilix::FileLogger::~FileLogger()
 }
 
 std::string 
-Utilix::LogFormatter::format(
+Utilix::LogFormatter::Format(
 	const std::string_view& current_time,
 	const std::string_view& log_type,
 	const std::string_view& msg,
-	const std::string_view& file,
+	const std::string_view& src,
 	int line)
 {
-	return std::format("{} [{}] {}:{} {}", current_time, log_type, file, line, msg);
+	return std::format("{} [{}] {}:{} {}", current_time, log_type, src, line, msg);
+}
+
+std::string
+Utilix::LogFormatter::Format(
+	const std::string_view& current_time,
+	const std::string_view& log_type,
+	const std::string_view& msg,
+	const std::string_view& src)
+{
+	return std::format("{} [{}] {}: {}", current_time, log_type, src, msg);
 }
 
 LoggerPool& 
@@ -174,10 +184,10 @@ void
 Utilix::LoggerPool::log(
 	LogType type,
 	const std::string& msg,
-	const std::string& src_file,
+	const std::string& src,
 	int line) const
 {
-	const std::string file_str = get_substring_after(src_file, SolutionRootFolder);
+	const std::string file_str = get_substring_after(src, SolutionRootFolder);
 	const std::string_view type_str = get_type(type);
 	const std::string time_str = TimeFormatter::to_log_str();
 
@@ -186,7 +196,25 @@ Utilix::LoggerPool::log(
 
 	for (const auto& logger : m_logger_pool | std::views::filter(pred))
 	{
-		logger->log(LogFormatter::format(time_str, type_str, msg, file_str, line));
+		logger->log(LogFormatter::Format(time_str, type_str, msg, file_str, line));
+	}
+}
+
+void
+Utilix::LoggerPool::log(
+	LogType type,
+	const std::string& msg,
+	const std::string& src) const
+{
+	const std::string_view type_str = get_type(type);
+	const std::string time_str = TimeFormatter::to_log_str();
+
+	const auto pred = [&type](const std::unique_ptr<Logger>& logger) -> bool
+		{ return logger->cmp_type(type); };
+
+	for (const auto& logger : m_logger_pool | std::views::filter(pred))
+	{
+		logger->log(LogFormatter::Format(time_str, type_str, msg, src));
 	}
 }
 
@@ -204,7 +232,7 @@ Utilix::LoggerPool::get_type(const LogType& type) const
 		{LogType::PANIC, "PANIC"},
 	};
 
-	static auto pred = [&type](const auto& pair) {
+	const auto pred = [&type](const auto& pair) {
 		return pair.first == type;
 	};
 
@@ -222,7 +250,7 @@ Utilix::LoggerPool::get_substring_after(
 {
 	const auto found = str.rfind(sequence);
 	if (found != std::string::npos) {
-		return str.substr(found + sequence.length(), str.length());
+		return str.substr(found + sequence.length() + 1, str.length());
 	}
 	return "";
 }
