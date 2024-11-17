@@ -30,7 +30,8 @@ Utilix::LogType convert(int ffmpegLogLevel) {
     if (found != typeMap.end()) {
         return found->second;
     }
-    std::cerr << "Error: Unknown FFmpeg AV_LOG_TYPE=" << ffmpegLogLevel << std::endl;
+
+    LOG_ERROR("Error: Unknown FFmpeg AV_LOG_TYPE=");
     return Utilix::LogType::NONE;
 }
 

@@ -13,7 +13,7 @@
 #include <fstream>
 #include <vector>
 
-namespace Utilix {
+namespace UTLX {
 	/**
 	* Enumeration of logging types.
 	*/
@@ -45,11 +45,14 @@ namespace Utilix {
 		virtual ~Logger() = default;
 
 		void log(const std::string_view& msg) const;
+
 		bool cmp_type(const LogType& type) const;
 
 	protected:
 		Logger() = default;
+
 		void set_ostream(std::ostream& ostream);
+
 		void set_type_mask(const LogType& mask);
 
 		std::string m_logger_name;
@@ -64,6 +67,7 @@ namespace Utilix {
 	class TerminalLogger : public Logger {
 	public:
 		TerminalLogger(LogType typemask);
+
 		~TerminalLogger() override = default;
 	};
 
@@ -73,6 +77,7 @@ namespace Utilix {
 	class FileLogger : public Logger {
 	public:
 		FileLogger(std::string filepath, LogType typemask);
+
 		~FileLogger() override;
 
 	private:
@@ -90,6 +95,7 @@ namespace Utilix {
 			const std::string_view& msg,
 			const std::string_view& src,
 			int line);
+
 		static std::string Format(
 			const std::string_view& current_time,
 			const std::string_view& log_type,
@@ -105,14 +111,19 @@ namespace Utilix {
 		static LoggerPool& get_instance(); // Singleton
 
 		~LoggerPool() = default;
+
 		void add_terminal_logger(LogType typemask = LogType::ALL);
+
 		void add_file_logger(std::string logger_path, LogType typemask = LogType::ALL);
+
 		void add_file_logger(LogType typemask = LogType::ALL);
+
 		void log(
 			LogType type,
 			const std::string& msg,
 			const std::string& src_file,
 			int line) const;
+
 		void log(
 			LogType type,
 			const std::string& msg,
@@ -122,9 +133,11 @@ namespace Utilix {
 		LoggerPool() = default; // Singleton
 
 		std::string_view get_type(const LogType& type) const;
+
 		std::string get_substring_after(
 			const std::string& str,
 			const std::string_view& sequence) const;
+
 		std::string get_substring_until(
 			const std::string& str,
 			const std::string_view& sequence) const;

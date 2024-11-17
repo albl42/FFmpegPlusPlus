@@ -18,15 +18,23 @@
 #define DEBUG_BREAK std::cout << "Error: Debug break not supported on the current system." << std::endl;
 #endif
 
-using namespace Utilix;
+using namespace UTLX;
 
 // Todo remove dependency to hardcoded solution name
 constexpr std::string_view SolutionRootFolder = "FFmpegPlusPlus";
 constexpr std::string_view TerminalName = "Terminal";
 
 namespace {
+
+	/**
+	* @brief TimeFormatter provides static methods to format time strings.
+	*/
 	class TimeFormatter {
 	public:
+
+		/**
+		* @brief Returns the current time in the format: "YYYY-MM-DD HH:MM:SS.MMMMMMM"
+		*/
 		static std::string to_log_str() {
 			const auto timePair = update_current_time();
 			return std::format("{}-{:02}-{:02} {:02}:{:02}:{:02}.{:07}",
@@ -40,6 +48,9 @@ namespace {
 			);
 		};
 
+		/**
+		* @brief Returns the current time in the format: "YYYYMMDD_HHMMSS_MMMMMMM"
+		*/
 		static std::string to_filename() {
 			const auto timePair = update_current_time();
 			return std::format("{}{:02}{:02}_{:02}{:02}{:02}_{:07}",
@@ -56,7 +67,8 @@ namespace {
 	private:
 		typedef std::pair<
 			std::chrono::year_month_day,
-			std::chrono::hh_mm_ss<std::chrono::system_clock::duration>> TimePair;
+			std::chrono::hh_mm_ss<std::chrono::system_clock::duration>>
+			TimePair;
 
 		// Source: https://stackoverflow.com/questions/65646395/c-retrieving-current-date-and-time-fast
 		static TimePair update_current_time() {
@@ -73,39 +85,39 @@ namespace {
 	};
 }
 
-void 
-Utilix::Logger::log(const std::string_view& msg) const
+void
+UTLX::Logger::log(const std::string_view& msg) const
 {
 	if (m_out) {
 		std::osyncstream(*m_out) << msg;
 	}
 }
 
-bool 
-Utilix::Logger::cmp_type(const LogType& type) const
+bool
+UTLX::Logger::cmp_type(const LogType& type) const
 {
 	return static_cast<unsigned>(m_type_mask) & static_cast<unsigned>(type);
 }
 
 void
-Utilix::Logger::set_ostream(std::ostream& ostream)
+UTLX::Logger::set_ostream(std::ostream& ostream)
 {
 	m_out = &ostream;
 }
 
-void Utilix::Logger::set_type_mask(const LogType& type)
+void UTLX::Logger::set_type_mask(const LogType& type)
 {
 	m_type_mask = type;
 }
 
-Utilix::TerminalLogger::TerminalLogger(LogType typemask)
+UTLX::TerminalLogger::TerminalLogger(LogType typemask)
 {
 	set_ostream(std::cout);
 	set_type_mask(typemask);
 	m_logger_name = TerminalName;
 }
 
-Utilix::FileLogger::FileLogger(std::string filepath, LogType typemask)
+UTLX::FileLogger::FileLogger(std::string filepath, LogType typemask)
 {
 	m_file_out.open(filepath, std::fstream::out | std::fstream::app);
 	if (!m_file_out.good() || !m_file_out.is_open()) {
@@ -118,15 +130,15 @@ Utilix::FileLogger::FileLogger(std::string filepath, LogType typemask)
 	m_logger_name = "File:" + filepath;
 }
 
-Utilix::FileLogger::~FileLogger()
+UTLX::FileLogger::~FileLogger()
 {
 	if (m_file_out.is_open()) {
 		m_file_out.close();
 	}
 }
 
-std::string 
-Utilix::LogFormatter::Format(
+std::string
+UTLX::LogFormatter::Format(
 	const std::string_view& current_time,
 	const std::string_view& log_type,
 	const std::string_view& msg,
@@ -137,7 +149,7 @@ Utilix::LogFormatter::Format(
 }
 
 std::string
-Utilix::LogFormatter::Format(
+UTLX::LogFormatter::Format(
 	const std::string_view& current_time,
 	const std::string_view& log_type,
 	const std::string_view& msg,
@@ -146,27 +158,27 @@ Utilix::LogFormatter::Format(
 	return std::format("{} [{}] {}: {}", current_time, log_type, src, msg);
 }
 
-LoggerPool& 
-Utilix::LoggerPool::get_instance()
+LoggerPool&
+UTLX::LoggerPool::get_instance()
 {
 	static LoggerPool instance;
 	return instance;
 }
 
-void 
-Utilix::LoggerPool::add_terminal_logger(LogType typemask)
+void
+UTLX::LoggerPool::add_terminal_logger(LogType typemask)
 {
-	m_logger_pool.emplace_back(std::make_unique<Utilix::TerminalLogger>(typemask));
+	m_logger_pool.emplace_back(std::make_unique<UTLX::TerminalLogger>(typemask));
 }
 
-void 
-Utilix::LoggerPool::add_file_logger(std::string logger_path,LogType typemask)
+void
+UTLX::LoggerPool::add_file_logger(std::string logger_path, LogType typemask)
 {
-	m_logger_pool.emplace_back(std::make_unique<Utilix::FileLogger>(logger_path, typemask));
+	m_logger_pool.emplace_back(std::make_unique<UTLX::FileLogger>(logger_path, typemask));
 }
 
-void 
-Utilix::LoggerPool::add_file_logger(LogType typemask)
+void
+UTLX::LoggerPool::add_file_logger(LogType typemask)
 {
 	const std::string filename = TimeFormatter::to_filename() + ".log";
 	const std::string currentpath = std::filesystem::current_path().string();
@@ -180,8 +192,8 @@ Utilix::LoggerPool::add_file_logger(LogType typemask)
 	}
 }
 
-void 
-Utilix::LoggerPool::log(
+void
+UTLX::LoggerPool::log(
 	LogType type,
 	const std::string& msg,
 	const std::string& src,
@@ -191,7 +203,7 @@ Utilix::LoggerPool::log(
 	const std::string_view type_str = get_type(type);
 	const std::string time_str = TimeFormatter::to_log_str();
 
-	const auto pred = [&type](const std::unique_ptr<Logger>& logger) -> bool 
+	const auto pred = [&type](const std::unique_ptr<Logger>& logger) -> bool
 		{ return logger->cmp_type(type); };
 
 	for (const auto& logger : m_logger_pool | std::views::filter(pred))
@@ -201,7 +213,7 @@ Utilix::LoggerPool::log(
 }
 
 void
-Utilix::LoggerPool::log(
+UTLX::LoggerPool::log(
 	LogType type,
 	const std::string& msg,
 	const std::string& src) const
@@ -218,8 +230,8 @@ Utilix::LoggerPool::log(
 	}
 }
 
-std::string_view 
-Utilix::LoggerPool::get_type(const LogType& type) const
+std::string_view
+UTLX::LoggerPool::get_type(const LogType& type) const
 {
 	static std::vector<std::pair<LogType, const std::string>> typeMap = {
 		{LogType::NONE,  "NONE "},
@@ -234,7 +246,7 @@ Utilix::LoggerPool::get_type(const LogType& type) const
 
 	const auto pred = [&type](const auto& pair) {
 		return pair.first == type;
-	};
+		};
 
 	auto found = std::ranges::find_if(typeMap, pred);
 	if (found != typeMap.end()) {
@@ -244,7 +256,7 @@ Utilix::LoggerPool::get_type(const LogType& type) const
 }
 
 std::string
-Utilix::LoggerPool::get_substring_after(
+UTLX::LoggerPool::get_substring_after(
 	const std::string& str,
 	const std::string_view& sequence) const
 {
@@ -255,8 +267,8 @@ Utilix::LoggerPool::get_substring_after(
 	return "";
 }
 
-std::string 
-Utilix::LoggerPool::get_substring_until(
+std::string
+UTLX::LoggerPool::get_substring_until(
 	const std::string& str,
 	const std::string_view& sequence) const
 {
