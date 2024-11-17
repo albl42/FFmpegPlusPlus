@@ -5,6 +5,9 @@
     <ClCompile Include="util\FFmpegLogging.cpp">
       <Filter>util</Filter>
     </ClCompile>
+    <ClCompile Include="util\FFmpegParams.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="util">
@@ -13,6 +16,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="util\FFmpegLogging.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\FFmpegParams.h">
       <Filter>util</Filter>
     </ClInclude>
   </ItemGroup>
